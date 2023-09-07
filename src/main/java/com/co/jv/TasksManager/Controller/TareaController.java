@@ -1,0 +1,35 @@
+package com.co.jv.TasksManager.Controller;
+
+import com.co.jv.TasksManager.DTO.TareaDTO;
+import com.co.jv.TasksManager.Service.TareaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping(path = "/api")
+public class TareaController {
+    @Autowired
+    private TareaService tareaService;
+    @PostMapping("/task")
+    public ResponseEntity<?> save(@RequestBody TareaDTO tareaDTO, Errors errors){
+        if(errors.hasErrors()){
+            return ResponseEntity.badRequest().body("Register faild");
+        }
+        tareaService.save(tareaDTO);
+        return ResponseEntity.ok("Register succesful");
+    }
+    @GetMapping("/tasks/{usuarioId}")
+    public ResponseEntity<?> getAllTasksByIdUser(@PathVariable String usuarioId){
+        List<TareaDTO> tareaDTOS = tareaService.findTareasByUsuarioIdYEstadoDoneInProgress(usuarioId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Responded","TaskController");
+        return ResponseEntity.accepted().headers(headers).body(tareaDTOS);
+    }
+
+
+}
