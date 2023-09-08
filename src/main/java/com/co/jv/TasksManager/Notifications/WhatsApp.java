@@ -7,7 +7,6 @@ import com.twilio.type.PhoneNumber;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 @Component
 public class WhatsApp implements Notifications<WhatsAppArgs>{
 
@@ -18,19 +17,21 @@ public class WhatsApp implements Notifications<WhatsAppArgs>{
     @Value("${twilio.number-local}")
     private String NUMBERLOCAL;
 
-    @Override
-    public void Send(List<WhatsAppArgs> args) {
-        Twilio.init(ACCOUNT_SID, AUTHTOKEN);
-        for (WhatsAppArgs arg : args) {
-            Message message = Message.creator(
-                    new PhoneNumber(arg.getNumeroDestino()),
-                    new PhoneNumber(NUMBERLOCAL),
-                    "Hola te avisamos que tienes "+
-                            arg.getTitulo()+" para el "+
-                            arg.getFechaLimite()+"."
-            ).create();
-        }
 
+
+    @Override
+    public void Send(WhatsAppArgs args) {
+        Twilio.init(ACCOUNT_SID, AUTHTOKEN);
+        String titulos = String.join(", ",args.getTitulo());
+            Message message = Message.creator(
+                    new PhoneNumber(args.getNumeroDestino()),
+                    new PhoneNumber(NUMBERLOCAL),
+                    "Tu tarea : "+
+                            titulos+"  esta para el "+
+                            args.getFechaLimite()+"."
+            ).create();
     }
 
 }
+
+

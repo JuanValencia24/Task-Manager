@@ -31,26 +31,26 @@ public class NotificationsWhatsAppScheduled {
     @Scheduled(cron = "0 0 6 * * *")
     public void sendNotificationsWhatsApp(){
         List<Usuario> usuarios = usuarioRepo.findAll();
-        List<WhatsAppArgs> infoNotificacion=new ArrayList<>();
+        WhatsAppArgs infoNotificacion = new WhatsAppArgs();
+        List<String> titulos = new ArrayList<>();
         LocalDate fechaActual=LocalDate.now();
-        Date fechaFormateada=Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Optional<List<Tarea>> tareas = tareaRepo.findTareasByFechaNotificacionAndNotificame(fechaFormateada);
-
+        Optional<List<Tarea>> tareas = tareaRepo.findTareasByFechaNotificacionAndNotificame(fechaActual);
         if(tareas.isPresent()){
-            for (Tarea tarea:tareas.get()){
-                for (Usuario usuario:usuarios){
-                    if(tarea.getUsuarioId().equals(usuario.getId())){
-                        for(WhatsAppArgs info:infoNotificacion){
-                            info.setNumeroDestino(usuario.getCodigoPais()+usuario.getNumeroTelefono());
-                            info.setTitulo(tarea.getTitulo());
-                            info.setFechaLimite(tarea.getFechaLimite());
-                            whatsApp.Send(infoNotificacion);
-                            infoNotificacion.clear();
-                        }
+            for (Usuario usuario:usuarios){
+                for (Tarea tarea:tareas.get()){
+                    if(usuario.getId().equals(tarea.getUsuarioId())){
+                        infoNotificacion.setNumeroDestino("whatsapp:"+usuario.getCodigoPais()+usuario.getNumeroTelefono());
+                        titulos.add(tarea.getTitulo());
+                        infoNotificacion.setFechaLimite(tarea.getFechaLimite());
                     }
+
                 }
+                infoNotificacion.setTitulo(titulos);
+                whatsApp.Send(infoNotificacion);
+                titulos.clear();
             }
 
         }
+
     }
 }

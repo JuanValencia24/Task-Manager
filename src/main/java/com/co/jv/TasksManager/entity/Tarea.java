@@ -10,6 +10,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 @Document(collection = "tareas")
@@ -25,9 +27,9 @@ public class Tarea{
     private String descripcion;
     @NotNull
     @Field("fecha_limite")
-    private Date fechaLimite;
+    private LocalDate fechaLimite;
     @Field("fecha_notificacion")
-    private Date fechaNotificacion;
+    private LocalDate fechaNotificacion;
     @NotNull
     @Field("usuario_id")
     private String usuarioId;
@@ -40,11 +42,11 @@ public class Tarea{
     @NotNull
     @CreatedDate
     @Field("fecha_creacion")
-    private Date fechaCreacion;
+    private LocalDate fechaCreacion;
     @NotNull
     @LastModifiedDate
     @Field("fecha_actualizacion")
-    private Date fechaActualizacion;
+    private LocalDate fechaActualizacion;
 
 
 

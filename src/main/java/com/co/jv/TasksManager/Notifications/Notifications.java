@@ -8,5 +8,5 @@ import java.util.List;
 public interface Notifications<T> {
 
 
-    void Send(List<T> args);
+    void Send(T args);
 }

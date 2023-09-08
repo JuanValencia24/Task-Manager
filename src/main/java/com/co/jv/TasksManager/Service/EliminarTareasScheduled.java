@@ -22,17 +22,11 @@ public class EliminarTareasScheduled {
     public void EliminarTareaConEstadoDelete(){
         List<Tarea> tareasEliminar;
         LocalDate fechaActual=LocalDate.now();
-        LocalDate fechaComparar;
-        Date fechaFormateada=Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Optional<List<Tarea>> optionalTareas = tareaRepo.findTareasByFechaLimiteActualAndEstadoDone(fechaFormateada);
+        Optional<List<Tarea>> optionalTareas = tareaRepo.findTareasByFechaLimiteActualAndEstadoDone(fechaActual);
         if(optionalTareas.isPresent()){
             tareasEliminar = optionalTareas.get();
             for(Tarea tarea : tareasEliminar){
-                fechaComparar = tarea.getFechaLimite().toInstant()
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDate();
-
-                if(fechaComparar.plusDays(7).equals(fechaActual)){
+                if(tarea.getFechaLimite().plusDays(7).equals(fechaActual)){
                     tareaRepo.deleteById(tarea.getId());
                 }
             }

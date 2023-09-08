@@ -23,7 +23,7 @@ public class ActualizarNotificadoYEstadoScheduled {
         List<Tarea> tareasModificar;
         LocalDate fechaActual=LocalDate.now();
         Date fechaFormateada=Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Optional<List<Tarea>> optionalTareas=tareaRepo.findTareasByFechaLimiteActual(fechaFormateada);
+        Optional<List<Tarea>> optionalTareas=tareaRepo.findTareasByFechaLimiteActual(LocalDate.now());
 
         if(optionalTareas.isPresent()){
             tareasModificar=optionalTareas.get();
