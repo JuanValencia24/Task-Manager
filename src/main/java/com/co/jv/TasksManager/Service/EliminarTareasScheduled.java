@@ -19,16 +19,17 @@ public class EliminarTareasScheduled {
     private TareaRepo tareaRepo;
 
     @Scheduled(cron = "0 0 0 * * *")
-    public void EliminarTareaConEstadoDelete(){
+    public void EliminarTareaConEstadoDone(){
         List<Tarea> tareasEliminar;
-        LocalDate fechaActual=LocalDate.now();
-        Optional<List<Tarea>> optionalTareas = tareaRepo.findTareasByFechaLimiteActualAndEstadoDone(fechaActual);
+        LocalDate fechaHaceSieteDias=LocalDate.now().minusDays(7);
+        System.out.println(fechaHaceSieteDias);
+        Optional<List<Tarea>> optionalTareas = tareaRepo.findTareasByFechaLimiteActualAndEstadoDone(fechaHaceSieteDias);
+
         if(optionalTareas.isPresent()){
             tareasEliminar = optionalTareas.get();
             for(Tarea tarea : tareasEliminar){
-                if(tarea.getFechaLimite().plusDays(7).equals(fechaActual)){
                     tareaRepo.deleteById(tarea.getId());
-                }
+
             }
 
         }

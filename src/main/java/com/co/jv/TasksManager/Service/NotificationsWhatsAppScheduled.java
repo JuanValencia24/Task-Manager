@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -34,22 +36,22 @@ public class NotificationsWhatsAppScheduled {
         WhatsAppArgs infoNotificacion = new WhatsAppArgs();
         List<String> titulos = new ArrayList<>();
         LocalDate fechaActual=LocalDate.now();
-        Optional<List<Tarea>> tareas = tareaRepo.findTareasByFechaNotificacionAndNotificame(fechaActual);
-        if(tareas.isPresent()){
-            for (Usuario usuario:usuarios){
-                for (Tarea tarea:tareas.get()){
-                    if(usuario.getId().equals(tarea.getUsuarioId())){
-                        infoNotificacion.setNumeroDestino("whatsapp:"+usuario.getCodigoPais()+usuario.getNumeroTelefono());
-                        titulos.add(tarea.getTitulo());
-                        infoNotificacion.setFechaLimite(tarea.getFechaLimite());
+        List<Tarea> tareas = tareaRepo.findTareasByFechaNotificacionAndNotificame(fechaActual);
+        if(!tareas.isEmpty()) {
+            for (Usuario usuario : usuarios) {
+                    for (Tarea tarea : tareas) {
+                        if (usuario.getId().equals(tarea.getUsuarioId())) {
+                            infoNotificacion.setNumeroDestino("whatsapp:" + usuario.getCodigoPais() + usuario.getNumeroTelefono());
+                            titulos.add(tarea.getTitulo());
+                            infoNotificacion.setFechaLimite(tarea.getFechaLimite());
+                        }
+
                     }
+                    infoNotificacion.setTitulo(titulos);
+                    whatsApp.Send(infoNotificacion);
+                    titulos.clear();
 
-                }
-                infoNotificacion.setTitulo(titulos);
-                whatsApp.Send(infoNotificacion);
-                titulos.clear();
             }
-
         }
 
     }

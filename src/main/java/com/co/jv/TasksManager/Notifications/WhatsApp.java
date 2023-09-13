@@ -22,12 +22,12 @@ public class WhatsApp implements Notifications<WhatsAppArgs>{
     @Override
     public void Send(WhatsAppArgs args) {
         Twilio.init(ACCOUNT_SID, AUTHTOKEN);
-        String titulos = String.join(", ",args.getTitulo());
+        String titulos = String.join(", ",args.getTitulo());;
             Message message = Message.creator(
-                    new PhoneNumber(args.getNumeroDestino()),
-                    new PhoneNumber(NUMBERLOCAL),
+                    new com.twilio.type.PhoneNumber(args.getNumeroDestino()),
+                    new com.twilio.type.PhoneNumber(NUMBERLOCAL),
                     "Tu tarea : "+
-                            titulos+"  esta para el "+
+                            titulos+" esta para el "+
                             args.getFechaLimite()+"."
             ).create();
     }

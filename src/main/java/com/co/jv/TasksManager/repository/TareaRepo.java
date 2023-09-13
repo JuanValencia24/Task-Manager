@@ -15,14 +15,14 @@ import java.util.Optional;
 public interface TareaRepo extends MongoRepository<Tarea,String> {
     List<Tarea> findByUsuarioId(String usuarioId);
 
-    @Query("{'fecha_notificacion' : ?0, 'notificame' : true}")
-    Optional<List<Tarea>> findTareasByFechaNotificacionAndNotificame(LocalDate fechaNotificacion);
+    @Query("{'fecha_notificacion' : ?0,'notificame' : true}")
+    List<Tarea> findTareasByFechaNotificacionAndNotificame(LocalDate fechaNotificacion);
 
-    @Query("'fecha_limite' : ?0, 'notificado' : false")
-    Optional<List<Tarea>> findTareasByFechaLimiteActual(LocalDate fechaLimite);
+    @Query("{'fecha_limite': ?0, 'notificado': false}")
+    List<Tarea> findTareasByFechaLimiteActual(LocalDate fechaLimite);
     @Query("{'usuario_id' : ?0, 'estado' : {$in : ['DONE', 'IN_PROGRESS']}}")
     List<Tarea> findTareasByUsuarioIdAndEstado(String usuarioId);
-    @Query("'fecha_limite' : ?0, 'estado' : 'DONE'")
+    @Query("{'fecha_limite' : ?0,'estado' : 'DONE'}")
     Optional<List<Tarea>> findTareasByFechaLimiteActualAndEstadoDone(LocalDate fechaLimite);
 
 }

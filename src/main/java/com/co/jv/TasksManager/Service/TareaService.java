@@ -45,6 +45,7 @@ public class TareaService implements TareaCasoDeUso {
     @Override
     @Transactional
     public String update(TareaDTO tareaDTO) {
+        System.out.println(tareaDTO.getId());
         Optional<Tarea> optionalTarea = tareaRepo.findById(tareaDTO.getId());
         if(optionalTarea.isPresent()){
             tareaRepo.save(tareaMapper.tareaDTOToTarea(tareaDTO));
