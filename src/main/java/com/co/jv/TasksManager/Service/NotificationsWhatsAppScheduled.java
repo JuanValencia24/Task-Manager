@@ -2,22 +2,17 @@ package com.co.jv.TasksManager.Service;
 
 import com.co.jv.TasksManager.Notifications.WhatsApp;
 import com.co.jv.TasksManager.entity.Tarea;
-import com.co.jv.TasksManager.entity.Usuario;
+import com.co.jv.TasksManager.auth.entity.Usuario;
 import com.co.jv.TasksManager.repository.TareaRepo;
-import com.co.jv.TasksManager.repository.UsuarioRepo;
+import com.co.jv.TasksManager.auth.repository.UsuarioRepo;
 import com.co.jv.TasksManager.utils.WhatsAppArgs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class NotificationsWhatsAppScheduled {
