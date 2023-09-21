@@ -17,10 +17,6 @@ public class TareaController {
     @Autowired
     private TareaService tareaService;
 
-		@GetMapping
-		public ResponseEntity<?> gets(){
-			return ResponseEntity.ok("Register successful");
-		}
 
     @PostMapping("/task")
     public ResponseEntity<?> save(@RequestBody TareaDTO tareaDTO, Errors errors){
